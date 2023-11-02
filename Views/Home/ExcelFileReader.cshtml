@@ -1,0 +1,65 @@
+﻿@{
+    ViewData["Title"] = "Excel File Reader";
+}
+
+<div class="text-center">
+    <h1 class="text-decoration-underline">Read Excel File</h1>﻿
+</div>
+
+
+<form method="post" enctype="multipart/form-data">
+    <div class="row">
+        <h3>Select File</h3>      
+    </div>
+   
+   <div class="row" style="padding-top: 10px;">
+        <div class="col-3">
+            <input type="file" id="fileInput" name="file" accept=".xlsx" required />
+        </div>
+    </div>
+    <div class="row" style="padding-top: 10px;">
+        <div class="col-3">
+            <input type="submit" class="btn btn-primary" value="Read Excel File" />
+        </div>
+    </div>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            @if (ViewBag.ExcelData != null && ViewBag.ExcelData.Count > 0)
+            {
+                @foreach (var header in ViewBag.ExcelData[0])
+                {
+                    <th>@header</th>
+                }
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @if (ViewBag.ExcelData != null && ViewBag.ExcelData.Count > 1)
+        {
+            @for (int i = 1; i < ViewBag.ExcelData.Count; i++)
+            {
+                <tr>
+                    @foreach (var cell in ViewBag.ExcelData[i])
+                    {
+                        <td>@cell</td>
+                    }
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<script>
+    $(document).ready(function () {
+        $('form').submit(function () {
+            var fileInput = $('#fileInput'); // Assuming your input element has id="fileInput"
+            if (fileInput.get(0).files.length === 0) {
+                alert('Please choose a file first.');
+                return false; // Prevent form submission
+            }
+        });
+    });
+</script>
